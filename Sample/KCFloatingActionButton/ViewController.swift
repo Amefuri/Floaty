@@ -26,6 +26,7 @@ class ViewController: UIViewController, FloatyDelegate {
     @IBAction func customImageSwitched(_ sender: UISwitch) {
         if sender.isOn == true {
             floaty.buttonImage = UIImage(named: "custom-add")
+            floaty.buttonHighlightImage = UIImage(named: "icShare")
         } else {
             floaty.buttonImage = nil
         }

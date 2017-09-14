@@ -80,6 +80,15 @@ open class Floaty: UIView {
             self.setNeedsDisplay()
         }
     }
+  
+    /**
+        Button image.
+    */
+    @IBInspectable open var buttonHighlightImage: UIImage? = nil {
+      didSet {
+        self.setNeedsDisplay()
+      }
+    }
 
     /**
         Plus icon color inside button.
@@ -272,6 +281,7 @@ open class Floaty: UIView {
     */
     open func open() {
         fabDelegate?.floatyWillOpen?(self)
+        setButtonHighlightImage()
         let animationGroup = DispatchGroup()
         
         if(items.count > 0){
@@ -323,6 +333,7 @@ open class Floaty: UIView {
     */
     open func close() {
         fabDelegate?.floatyWillClose?(self)
+        setButtonImage()
         let animationGroup = DispatchGroup()
         
         if(items.count > 0){
@@ -624,7 +635,7 @@ open class Floaty: UIView {
     fileprivate func setButtonImage() {
         buttonImageView.removeFromSuperview()
         buttonImageView = UIImageView(image: buttonImage)
-		buttonImageView.tintColor = plusColor
+        buttonImageView.tintColor = plusColor
         buttonImageView.frame = CGRect(
             x: circleLayer.frame.origin.x + (size / 2 - buttonImageView.frame.size.width / 2),
             y: circleLayer.frame.origin.y + (size / 2 - buttonImageView.frame.size.height / 2),
@@ -635,6 +646,21 @@ open class Floaty: UIView {
         addSubview(buttonImageView)
     }
 
+    fileprivate func setButtonHighlightImage() {
+      guard let buttonHighlightImage = buttonHighlightImage else { return }
+      buttonImageView.removeFromSuperview()
+      buttonImageView = UIImageView(image: buttonHighlightImage)
+      buttonImageView.tintColor = plusColor
+      buttonImageView.frame = CGRect(
+        x: circleLayer.frame.origin.x + (size / 2 - buttonImageView.frame.size.width / 2),
+        y: circleLayer.frame.origin.y + (size / 2 - buttonImageView.frame.size.height / 2),
+        width: buttonImageView.frame.size.width,
+        height: buttonImageView.frame.size.height
+      )
+    
+      addSubview(buttonImageView)
+    }
+  
     fileprivate func setTintLayer() {
         tintLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: size, height: size)
         tintLayer.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
